@@ -60,6 +60,11 @@ do_install() {
 
   RET=$?
   if [ "${RET}" = "0" ]; then
+    uci -q batch <<-EOF >/dev/null
+      set firewall.wxedge.enabled="1"
+      commit firewall
+EOF
+	  /etc/init.d/firewall reload
     # mark END, remove the log file
     echo ${LOGEND} >> ${LOGFILE}
     sleep 5
